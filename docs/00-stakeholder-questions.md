@@ -1,27 +1,36 @@
-# Stakeholder Questions and Assumptions
+# Stakeholder Questions and Responses
 
-The brief is incomplete. Questions below are to be sent **through the instructor** (course rule).
-Until answered, the team works with the stated default assumption. Status: `OPEN` / `ANSWERED` / `ASSUMED`.
+## How this document was produced
+No real PSU stakeholder (Student Affairs, officers, advisors, PSU IT) was available before Milestone 1.
+The team therefore prepared questions Q1 to Q16 with proposed defaults and put them to **Claude (an AI assistant) acting as a simulated stakeholder**.
+The responses were reviewed by the team (Faisal Alrabiah). Each response states whether it confirmed the default, changed it, or clarified it.
 
-| ID | Question | Why it matters | Default assumption | Status |
+**Limits of this evidence.** The responses are simulated. They are not confirmed by PSU, Student Affairs, or the instructor.
+The same AI proposed the defaults and then answered, so a "confirmed" answer is weak independent evidence. The most impactful answers (Q4, Q5, Q12) should be validated by a real stakeholder or in instructor feedback.
+
+Status values: `ANSWERED (simulated)` means the simulated stakeholder responded. Response type is `CONFIRMED`, `CHANGED`, or `CLARIFIED`.
+
+| ID | Question | Proposed default | Simulated stakeholder response | Effect on requirements |
 |---|---|---|---|---|
-| Q1 | Who creates clubs: only Student Affairs, or can students propose new clubs? | Club lifecycle | A1: Only Student Affairs creates clubs (as PENDING) and activates them | OPEN |
-| Q2 | Can one student belong to several clubs at once? | Uniqueness rules on memberships | A2: Yes, many clubs. One open (pending/approved) membership per student per club | OPEN |
-| Q3 | Can one person be an officer of several clubs, and an ordinary member of others? | Role model | A3: Yes. Officer/advisor roles are scoped per club | OPEN |
-| Q4 | May an officer decide their own membership request? | Conflict of interest | A4: No. A user can never decide their own request | OPEN |
-| Q5 | Is event approval one stage (Student Affairs) or two (advisor, then Student Affairs)? | Workflow and state machine | A5: One stage, Student Affairs only. Advisor is read-only in release 1 | OPEN |
-| Q6 | Are events open to all students or to club members only? | Registration rule | A6: Open to all signed-in students | OPEN |
-| Q7 | Do events have a capacity, and is there a waiting list? | Registration rule, concurrency risk | A7: Capacity is required. No waiting list | OPEN |
-| Q8 | Who records attendance, when, and can it be corrected? | Attendance rule and audit | A8: Club officers only, after event start; corrections allowed and audited | OPEN |
-| Q9 | What happens to registrations when an event is cancelled? | Data consistency | A9: Event becomes CANCELLED and its registrations become CANCELLED | OPEN |
-| Q10 | After a rejected request, may the student ask again? May an approved member leave? | Membership state machine | A10: Re-request allowed after rejection. Leaving a club is out of release 1 | OPEN |
-| Q11 | Which administrative report metrics does Student Affairs need? | Report scope | A11: Clubs by status, members per club, events by status, registrations and attendance per event | OPEN |
-| Q12 | Which actions must be audited, who may view the audit history, and for how long is it kept? | Audit design | A12: All state-changing decisions and admin actions are recorded. Student Affairs may view. No retention rule in the prototype | OPEN |
-| Q13 | Language and accessibility targets (English only? Arabic/right-to-left?) | UI scope | A13: English only, WCAG 2.1 AA as a target for the main flows | OPEN |
-| Q14 | Rules for event timing (minimum notice, overlap in the same location)? | Validation rules | A14: Start must be in the future and end after start. No overlap or notice rule | OPEN |
-| Q15 | Are club categories a fixed list or free text? | Search and data model | A15: Fixed seeded list | OPEN |
-| Q16 | May a club be deactivated or paused, and what happens then? | Possible change request | A16: Not in release 1. The club `status` field is designed to allow more values later | OPEN |
+| Q1 | Who creates clubs? | Only Student Affairs creates (PENDING) and activates clubs | CONFIRMED. Student club proposals are out of scope | FR-03, AC-05, AC-06 |
+| Q2 | Can a student belong to several clubs? | Yes. One open membership per student per club | CONFIRMED | FR-05, AC-09 |
+| Q3 | Can one person be officer of several clubs and member of others? | Yes. Officer and advisor roles are per club | CONFIRMED | `club_roles` table, AC-07, AC-13 |
+| Q4 | May an officer decide their own membership request? | No | CONFIRMED and extended: nobody may decide a request they submitted | AC-15 |
+| Q5 | One or two event approval stages? | One stage (Student Affairs). Advisor is read-only | CONFIRMED for release 1. An advisor stage is likely later | `02-design.md` section 7 |
+| Q6 | Events open to all students or members only? | All signed-in students | CONFIRMED | FR-12, AC-24 |
+| Q7 | Capacity and waiting list? | Capacity required. No waiting list | CONFIRMED | AC-24 to AC-26 |
+| Q8 | Who records attendance, can it be corrected? | Officers only, after start, corrections audited | CONFIRMED | FR-14, AC-29 |
+| Q9 | Registrations when an event is cancelled? | Registrations become CANCELLED | CONFIRMED | AC-22 |
+| Q10 | Re-request after rejection? Leaving a club? | Re-request allowed. Leaving out of scope | CONFIRMED | AC-09 |
+| Q11 | Which report metrics? | Clubs by status, members per club, events by status, registrations and attendance per event | **CHANGED**: also show the number of event proposals waiting for a decision | FR-16, AC-31 |
+| Q12 | Which actions are audited, who sees them? | All decisions and admin actions. Student Affairs views | **CLARIFIED**: all actions must be recorded. No viewing screen is required in release 1, but data must allow a later audit report. Records are never editable through the API | US-15, AC-32, section 8 of requirements |
+| Q13 | Language and accessibility? | English only, WCAG 2.1 AA target | CONFIRMED. Arabic/right-to-left is a future requirement, not tested now | NFR-04 |
+| Q14 | Event timing rules? | Start in future, end after start. No overlap rule | CONFIRMED | AC-17 |
+| Q15 | Club categories fixed or free text? | Fixed seeded list | CONFIRMED | AC-03 |
+| Q16 | Deactivating or pausing clubs? | Not in release 1 | CONFIRMED. `status` field kept extensible | `02-design.md` section 7 |
 
-## Unresolved assumptions carried into Milestone 2
-All items marked OPEN above. Update the status column when the instructor answers, and record any
-requirement that changed because of an answer in the change history of `docs/01-requirements.md`.
+Status of all questions: `ANSWERED (simulated)`.
+
+## Remaining validation (carried into Milestone 2)
+1. Validate Q4, Q5 and Q12 with the instructor or a real stakeholder when possible.
+2. If instructor feedback on Milestone 1 contradicts any response above, record the change in the change history of `01-requirements.md` and update the affected tests.
