@@ -1,4 +1,4 @@
-# Requirements Specification: PSU Clubs Hub (Release 1)
+﻿# Requirements Specification: PSU Clubs Hub (Release 1)
 
 Priorities use MoSCoW (M = must, S = should, C = could). Stakeholder responses Q1 to Q16 (from a simulated stakeholder, see `00-stakeholder-questions.md`) are the source for the rules below.
 
@@ -142,7 +142,7 @@ Simulated login only. No notifications, no waiting list, no leaving a club, no a
 ## 9. Change history
 | Date | Change | Reason |
 |---|---|---|
-| TODO(team) | Initial version | Milestone 1 |
-| TODO(team) | Added pending event proposals to the report (FR-16, AC-31) | Simulated stakeholder response Q11 |
-| TODO(team) | AC-10 now returns 404 only. US-15 aligned with release 1 scope | Review found an untestable criterion and a scope inconsistency (Q12) |
-| TODO(team) | AC-15 widened to any user who submitted the request | Simulated stakeholder response Q4 |
+| 2026-10-24 | Initial version | Milestone 1 |
+| 2026-10-24 | Added pending event proposals to the report (FR-16, AC-31) | Simulated stakeholder response Q11 |
+| 2026-10-24 | AC-10 now returns 404 only. US-15 aligned with release 1 scope | Review found an untestable criterion and a scope inconsistency (Q12) |
+| 2026-10-24 | AC-15 widened to any user who submitted the request | Simulated stakeholder response Q4 |
