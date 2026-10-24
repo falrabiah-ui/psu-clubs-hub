@@ -1,18 +1,20 @@
 # Requirements Specification: PSU Clubs Hub (Release 1)
 
-Priorities use MoSCoW (M = must, S = should, C = could). Assumptions A1 to A16 are in `00-stakeholder-questions.md`.
+Priorities use MoSCoW (M = must, S = should, C = could). Stakeholder responses Q1 to Q16 (from a simulated stakeholder, see `00-stakeholder-questions.md`) are the source for the rules below.
 
 ## 1. Purpose and scope
 Local prototype that lets students discover clubs and join them, lets officers run their own club,
 and lets Student Affairs approve events and see institutional reports.
 **Out of scope:** payments, real university authentication (simulated accounts only), real student data, production deployment.
 
+**Requirements source.** No real stakeholder was available before Milestone 1. Rules come from the course brief and from responses of a simulated stakeholder (an AI assistant) reviewed by the team. They still need confirmation by PSU or the instructor.
+
 ## 2. Stakeholders and roles
 | Role | Who | Main needs |
 |---|---|---|
 | Student | Any simulated student | Find clubs, request membership, register for events, see own data |
 | Club officer | Student with OFFICER role in one or more clubs | Manage membership and events of own club only, record attendance |
-| Club advisor | Staff with ADVISOR role in a club | Read-only view of own club in release 1 (A5) |
+| Club advisor | Staff with ADVISOR role in a club | Read-only view of own club in release 1 (Q5) |
 | Student Affairs (SA) | Administrator | Create/activate clubs, assign roles, approve events, reports, audit |
 | PSU IT (reviewer) | Not a system user | Judge architecture, security, privacy, maintainability |
 
@@ -34,7 +36,7 @@ and lets Student Affairs approve events and see institutional reports.
 | FR-13 | A student can cancel own registration before the event starts | S | US-11 |
 | FR-14 | An officer can record attendance for registered students of own club's event, after it starts | M | US-12 |
 | FR-15 | A student can see own attendance history | S | US-13 |
-| FR-16 | SA can view a summary report (A11) | M | US-14 |
+| FR-16 | SA can view a summary report, including the number of event proposals awaiting decision (Q11) | M | US-14 |
 | FR-17 | Every decision and administrative action is recorded in an audit log | M | US-15 |
 | FR-18 | Users sign in with a simulated account; role and club scope come from the server database | M | US-16 |
 
@@ -68,7 +70,7 @@ and lets Student Affairs approve events and see institutional reports.
 | US-12 | As an officer, I want to record attendance so that participation is tracked |
 | US-13 | As a student, I want to see my own attendance history |
 | US-14 | As Student Affairs, I want summary reports so that I can oversee club activity |
-| US-15 | As Student Affairs, I want an audit history so that decisions are traceable |
+| US-15 | As Student Affairs, I want every decision and admin action recorded so that they are traceable (a viewing screen is a possible later change, Q12) |
 | US-16 | As any user, I want to sign in with a simulated account so that I see only what my role allows |
 
 ## 6. Acceptance criteria
@@ -85,12 +87,12 @@ Format: Given / When / Then. HTTP codes: 401 not signed in, 403 not allowed, 404
 | AC-07 | FR-04 | Given an officer of club A, when they edit club B, then the response is 403 and club B is unchanged |
 | AC-08 | FR-05 | Given an ACTIVE club, when a student requests membership, then a PENDING request is stored for that student and club |
 | AC-09 | FR-05 | Given a PENDING or APPROVED membership exists, when the student requests again, then the response is 409 and no second row is created. After a REJECTED request a new request is allowed |
-| AC-10 | FR-05 | Given a PENDING club, when a student requests membership, then the response is 404 or 409 and nothing is stored |
+| AC-10 | FR-05 | Given a PENDING club, when a student requests membership, then the response is 404 and nothing is stored |
 | AC-11 | FR-06 | Given an officer of club A, when they list requests, then only club A requests appear |
 | AC-12 | FR-06, FR-17 | Given a PENDING request in the officer's club, when the officer approves or rejects, then the status changes and the audit log stores decider, decision, and time |
 | AC-13 | FR-06 | Given a request in another club, when an officer tries to decide it, then the response is 403 and the request is unchanged |
 | AC-14 | FR-06 | Given a request that is already decided, when it is decided again, then the response is 409 |
-| AC-15 | FR-06 (A4) | Given an officer who has their own PENDING request, when they try to decide it, then the response is 403 |
+| AC-15 | FR-06 (Q4) | Given any user who submitted a PENDING request, when they try to decide that request, then the response is 403 |
 | AC-16 | FR-07 | Given a student, when they list memberships, then only their own appear. They can cancel own PENDING request, not others', and not a decided one |
 | AC-17 | FR-08 | Given an officer of an ACTIVE club, when they propose an event with valid data (start in the future, end after start, capacity at least 1), then it is stored as PROPOSED. Invalid data gives 422 |
 | AC-18 | FR-08 | Given an officer of club A, when they propose an event for club B (or a non-ACTIVE club), then the response is 403 and nothing is stored |
@@ -106,7 +108,7 @@ Format: Given / When / Then. HTTP codes: 401 not signed in, 403 not allowed, 404
 | AC-28 | FR-13 | Given own registration and an event not yet started, when the student cancels, then the seat is freed. Cancelling another student's registration or after start is refused |
 | AC-29 | FR-14, FR-17 | Given a registered student and an event that has started, when an officer of that club marks attendance (present/absent), then it is stored and audited. Before start, 409. Officer of another club, 403. Non-registered student, 404 |
 | AC-30 | FR-15 | Given a student, when they view attendance, then only their own records appear |
-| AC-31 | FR-16 | Given seeded data, when SA requests the report, then counts of clubs by status, approved members per club, events by status, and registrations/attendance per event match the data. Non-SA gets 403 |
+| AC-31 | FR-16 | Given seeded data, when SA requests the report, then counts of clubs by status, approved members per club, events by status, pending event proposals, and registrations/attendance per event match the data. Non-SA gets 403 |
 | AC-32 | FR-17 | Given any audited action, then the audit record has actor ID, action, target, and time, with no personal data beyond IDs, and no API endpoint can change or delete audit records |
 | AC-33 | NFR-03 | Given a normal workflow, when application logs are inspected, then they contain user IDs but no names, emails, or secrets (manual check) |
 | AC-34 | NFR-04 | Given the main flows, when checked with a keyboard and an accessibility checker, then fields are labelled, focus order is logical, and no critical violations remain (manual checklist) |
@@ -135,9 +137,12 @@ Types: U = unit, I = integration (API), E = end-to-end workflow, M = manual. Tes
 | Main workflow | E | Student requests, officer approves, officer proposes, SA approves, student registers, officer marks attendance, report shows it |
 
 ## 8. Known limitations (release 1)
-Simulated login only. No notifications, no waiting list, no leaving a club, no advisor approval stage, no club inactive status, no audit report screen. These are open questions or possible change requests, and the design keeps room for them (`02-design.md`, section 7).
+Simulated login only. No notifications, no waiting list, no leaving a club, no advisor approval stage, no club inactive status, no audit report screen. These were deferred in the simulated stakeholder responses (Q5, Q10, Q12, Q16) or are possible change requests, and the design keeps room for them (`02-design.md`, section 7).
 
 ## 9. Change history
 | Date | Change | Reason |
 |---|---|---|
 | TODO(team) | Initial version | Milestone 1 |
+| TODO(team) | Added pending event proposals to the report (FR-16, AC-31) | Simulated stakeholder response Q11 |
+| TODO(team) | AC-10 now returns 404 only. US-15 aligned with release 1 scope | Review found an untestable criterion and a scope inconsistency (Q12) |
+| TODO(team) | AC-15 widened to any user who submitted the request | Simulated stakeholder response Q4 |
