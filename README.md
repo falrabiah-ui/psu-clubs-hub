@@ -20,7 +20,7 @@ Python 3.11+, FastAPI, SQLAlchemy, SQLite, pytest, small static HTML/JS front en
 ## Documentation map
 | File | Content |
 |---|---|
-| `docs/00-stakeholder-questions.md` | Open questions for the instructor and the assumptions we use meanwhile |
+| `docs/00-stakeholder-questions.md` | Stakeholder questions and the responses of the simulated stakeholder |
 | `docs/01-requirements.md` | Stakeholders, requirements, user stories, acceptance criteria, traceability |
 | `docs/02-design.md` | Architecture diagram, data model, API contract, role matrix, security/privacy/accessibility |
 | `docs/adr/` | Architecture decision records |
