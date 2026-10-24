@@ -1,7 +1,7 @@
 # ADR-001: Python/FastAPI modular monolith with SQLite and a JSON API
 
-Status: Proposed (team to confirm)  
-Date: TODO(team)
+Status: Accepted
+Date: 20/10/2026
 
 ## Context
 We need a prototype that runs locally, is easy to test, and that all three members can explain in an oral defense. The team has a free model only, so simple and widely documented technology reduces generated-code errors.
