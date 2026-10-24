@@ -31,15 +31,17 @@ Everyone reviews at least one other member's work and must be able to explain ev
 
 ## 3. Suggested schedule
 Milestone 1 (due in a couple of days)
-1. Day 1: whole team reads `00` and `01`, corrects them, sends `00` to the instructor, creates the repo and first commits.
+1. Day 1: put questions Q1 to Q16 to the simulated stakeholder, review the responses, update the requirements, create the repo and first commits.
 2. Day 2: review `02` and the ADRs, complete the AI-use log honestly, final consistency check (requirements, design, and plan agree), tag `milestone-1`.
+
+Note: the Milestone 1 documents were prepared by Faisal Alrabiah because of time constraints. The work split above applies from Milestone 2.
 
 Milestone 2: build per the course schedule (Weeks 4 to 8). Order: T-02, T-03, then T-05 to T-11 in parallel, then T-12 to T-16.
 
 ## 4. Risks
 | ID | Risk | Likelihood | Impact | Mitigation | Owner |
 |---|---|---|---|---|---|
-| R1 | Instructor answers change the rules | Medium | Medium | Assumptions logged. Rules isolated in services | Alrabiah |
+| R1 | Simulated stakeholder responses are not confirmed by real PSU stakeholders or the instructor | Medium | Medium | Responses documented in `00`, rules isolated in services, change history kept, validate Q4/Q5/Q12 when possible | Alrabiah |
 | R2 | AI-generated code has weak authorization (client-only, missing club scope) | High | High | Policy module, per-endpoint misuse tests, review every diff | All |
 | R3 | Large unreviewed AI changes, code the team cannot defend | High | High | One task per request, small commits, peer review, walkthrough meeting before demo | All |
 | R4 | Free model is less capable or hits limits | Medium | Medium | Short focused prompts, log limitations, keep tasks small | All |
